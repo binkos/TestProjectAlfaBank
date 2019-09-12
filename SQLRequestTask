@@ -1,0 +1,17 @@
+SELECT EMPLOYEE.NAME, EMPLOYEE1.NAME  //Если я правильно понял условие
+FROM EMPLOYEE
+INNER JOIN EMPLOYEE1 ON EMPLOYEE.DEPARTAMENT_ID = EMPLOYEE1.DEPARTAMENT_ID
+WHERE EMPLOYEE.POSITION != EMPLOYEE1.POSITION
+
+
+
+WITH avg_sal as                               //можно было через другой подзапрос сделать через where, но это первый и быстрый вариант реализации, который я нашёл в интернете
+(SELECT DEPARTAMENT_ID, AVG(SALARY) avg_salary
+FROM EMPLOYEE
+GROUP BY DEPARTAMENT_ID)
+select CHEIF_ID
+from EMPLOYEE
+inner join avg_sal
+on DEPARTAMENT_ID = avg_sal.DEPARTAMENT_ID
+where salary > avg_salary*2
+order by salary, last_name, first_name, employee_id
